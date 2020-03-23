@@ -16,7 +16,7 @@
 
 //Bands in Town
 //curl -X GET "https://rest.bandsintown.com/artists/A%20Day%20To%20Remember/events?app_id=642b1873e2de4bb01c82a203278b77e2" -H "accept: application/json"
-
+var results
 $(document).ready(function(){
     $('.datepicker').datepicker();
   });
@@ -38,7 +38,7 @@ $(document).on("click", "#search", function(event) {
       method: "GET"
     })
       .then(function(response) {
-       // var results = response.data;
+      results = response;
        console.log(response)
        console.log(response[0].venue.name)
        //console.log(results)
@@ -68,6 +68,7 @@ $(document).on("click", "#search", function(event) {
             
         $("#pic").html(pic)
         $("#info").append(showInfo)
+        logResults()
         //$("#info").append(venueLoc)
         //$("#info").append(date)
         }
@@ -81,6 +82,31 @@ $(document).on("click", "#search", function(event) {
 
          //$("#gifs").prepend(gifDiv);
         });
-      
+
     
     });
+
+
+
+       
+        function logResults () {
+          var weatherQ = "https://api.openweathermap.org/data/2.5/weather?lat=" + results[0].venue.latitude + "&lon=" + results[0].venue.longitude + "&appid=b6bcb836bbf008c6cea4df94d9ca492c"
+        console.log(weatherQ) 
+        
+        $.ajax({
+            url: weatherQ,
+            method: "GET"
+          })
+            .then(function(weather) {
+             console.log(weather.main.temp)
+                    $("#weather").append(weather.main.temp)
+                  })
+          
+
+        }
+      
+
+        
+
+
+

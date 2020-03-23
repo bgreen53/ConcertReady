@@ -9,14 +9,9 @@
 <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script src="assets/javascript/app.js"></script>
+<script src="assets/javascript/conread.js"></script>
 
 <!-- Compiled and minified JavaScript -->
-
-
-
-        
-
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <title>ConcertReady</title>
@@ -37,7 +32,7 @@
             <form class="col s6">
                 <div class="row">
                   <div class="input-field col s6">
-                    <textarea id="textarea1" class="materialize-textarea"></textarea>
+                    <textarea id="artist" class="materialize-textarea"></textarea>
                     <label for="textarea1">Search Bands</label>
                   </div>
                 </div>
@@ -47,12 +42,18 @@
                     <div class="input-field col s6">
                       <input type="text" class="datepicker">
                       <label for="datepicker">Pick Date</label>
+                      <button id="search" type="submit">Search</button>
                     </div>
                 </div>
             </form>
         </div>
         <!-- Adding the next set of divs -->
 
+        <div class="section">
+          <h5>Artist</h5>
+          <div id="info"></div>
+          <div id="pic"></div>
+        </div>
 
 
         <div class="section">
@@ -65,7 +66,8 @@
         <div class="row">
 
           <div class="col s4">
-            <p id="weather">Weather</p>
+            <p>Weather</p>
+            <div id="weather"></div>
           </div>
           <div class="col s4">
             <p id = "directions">Directions</p>

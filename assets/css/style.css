@@ -1,0 +1,18 @@
+img{
+    height: 200px;
+    width: 200px
+}
+
+#artInfo{
+    font-weight: bolder;
+    font-size: xx-large;
+    
+}
+
+#fbLink{
+    font-size: 30px;
+}
+
+#message{
+    float: right
+}

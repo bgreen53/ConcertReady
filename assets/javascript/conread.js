@@ -1,11 +1,13 @@
 
 //google maps API
 // async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqvGNseOhu5v3Yg0gHMVe4unXgRoLuPQw&callback=initMap"
-  
+//<script async src="https://cse.google.com/cse.js?cx=015633656253291760630:etvibjcc0u7"></script>
 
- //Open weather API
+
+//Open weather API
 //api.openweathermap.org/data/2.5/forecast/daily?q={city name}&cnt={cnt}&appid=b6bcb836bbf008c6cea4df94d9ca492c
 
+//Yelp API TNZPMvhXfv08hIWezsqEy28G9IUoCK13r2UgU4F6uPSuwMr7GoXyAilaB02gqtd-LJTsx3AMMbtwkBhUtIoyItGqyYEpTjhC6ezpEEu7-OeOk03LZyzg37dsdB2XnYx
 
 
 //Spotify API
@@ -19,7 +21,7 @@
 //Bands in Town
 //curl -X GET "https://rest.bandsintown.com/artists/A%20Day%20To%20Remember/events?app_id=642b1873e2de4bb01c82a203278b77e2" -H "accept: application/json"
 var results = []
-
+var res=[]
 $(document).ready(function(){
     $('.datepicker').datepicker();
   });
@@ -28,6 +30,7 @@ $(document).ready(function(){
 $(document).on("click", "#search", function(event) {
     event.preventDefault()
     $("#info").empty()
+    
     var band = $("#artist").val().trim().split(" ").join("%20")
     
     console.log(band)
@@ -49,11 +52,14 @@ $(document).on("click", "#search", function(event) {
        console.log(response[0].artist.image_url)
       
         for (var i = 0; i < 6; i++) {
+          
           var showInfo = $("<div>");
-          showInfo.attr("class", "card")
+          showInfo.addClass("card")
+          
           showInfo.append(venues)
           showInfo.append(venueLoc)
           showInfo.append(date)
+          showInfo.append(seeShow)
 
           
 
@@ -68,6 +74,10 @@ $(document).on("click", "#search", function(event) {
           var link=$("<a>").html("<i class='fa fa-facebook-square fa-lg' aria-hidden='true'></i>")
           link.attr("href", response[0].artist.facebook_page_url)
           console.log(response[0].artist.facebook_page_url)
+          var seeShow= $("<a class='waves-effect waves-light btn-small'>")
+          seeShow.text("See This Show")
+          seeShow.attr("id", "thisShow")
+          seeShow.attr("city", response[i].venue.city)
           
             console.log(pic)
 
@@ -81,23 +91,62 @@ $(document).on("click", "#search", function(event) {
         $("#artInfo").html(artInfo)
         $("#fbLink").html(link)
         $("#fbLink").append("Like them on Facebook!")
-        
-        //$("#info").append(venueLoc)
-        //$("#info").append(date)
         }
-         // var p = $("<p>").text("Rating: " + rating);
-
-          //var personImage = $("<img>");
-         // personImage.attr("src", results[i].images.fixed_height.url);
-
-         // gifDiv.prepend(p);
-         // gifDiv.prepend(personImage);
-
-         //$("#gifs").prepend(gifDiv);
+        
         });
  
     });
 
+
+      $(document).on("click", "#thisShow", function (event) {
+        
+       var loc= $(this).attr("city")
+        
+        var yelpURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location="+ loc +"&term=restaurants&limit=5";
+
+        var apiKey = "Yu1G5QxtO5YUFSh4YZMpbCWkVfstUvpnMirspGbNWj88cLXUw3rxgqrk7G9Kpkkxx_qic8LWkb9JeOeRnnpjZkXEo4s0TXtYPCCZj7DNZ3zwn2WNlb7QoXvBHnZ5XnYx"
+        console.log(yelpURL)
+        $.ajax({
+          url: yelpURL,
+          method: "GET",
+          dataType: "json",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`
+          }
+        }).then(function (res) {
+          var info =res.businesses
+          console.log(info)
+          console.log(res.businesses[0].name)
+          res=res
+          console.log(info.length)
+
+          for (var i = 0; i < info.length; i++){
+            console.log(info[i].name)
+            console.log(info)
+            console.log(info.length)
+    
+            var eats=$("<div>");
+            var resName= info[i].name
+            var resPic= info[i].image_url
+            var resRating= info[i].rating
+            var resType = info[i].category[0]
+
+            console.log(resName)
+    
+            $("#restaurants").append(resName)
+            $("#restaurants").append(resPic)
+            $("#restaurants").append(resRating)
+            $("#restaurants").append(resType)
+    
+          }
+
+
+
+        });
+      
+      });
+
+     
 
 
     

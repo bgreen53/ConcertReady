@@ -22,15 +22,30 @@
 //curl -X GET "https://rest.bandsintown.com/artists/A%20Day%20To%20Remember/events?app_id=642b1873e2de4bb01c82a203278b77e2" -H "accept: application/json"
 var results = []
 var res=[]
+
+
 $(document).ready(function(){
     $('.datepicker').datepicker();
   });
 
+  var curLoc= navigator.geolocation.getCurrentPosition(showPosition)
+  console.log(curLoc)
+
+  function showPosition(position) {
+    console.log( "Latitude: " + position.coords.latitude +
+    " Longitude: " + position.coords.longitude)
+    userLat= position.coords.latitude
+    userLng= position.coords.longitude
+
+    console.log(userLat)
+
+  }
 
 $(document).on("click", "#search", function(event) {
     event.preventDefault()
     $("#info").empty()
     $("#artist").empty()
+    console.log(userLng)
     
     var band = $("#artist").val().trim().split(" ").join("%20")
     
@@ -106,10 +121,12 @@ $(document).on("click", "#search", function(event) {
       $(document).on("click", "#thisShow", function (event) {
        $("#eats").empty()
        var loc= $(this).attr("city")
-       var lat= $(this).attr("lat")
-       var lon = $(this).attr("lon")
+        VenLat= $(this).attr("lat")
+        Venlng = $(this).attr("lon")
        
-        var yelpURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude="+ lat +"&longitude="+lon+ "&term=restaurants&limit=5";
+       
+       
+        var yelpURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude="+ VenLat +"&longitude="+ Venlng+ "&term=restaurants&limit=5";
 
         var apiKey = "Yu1G5QxtO5YUFSh4YZMpbCWkVfstUvpnMirspGbNWj88cLXUw3rxgqrk7G9Kpkkxx_qic8LWkb9JeOeRnnpjZkXEo4s0TXtYPCCZj7DNZ3zwn2WNlb7QoXvBHnZ5XnYx"
         console.log(yelpURL)

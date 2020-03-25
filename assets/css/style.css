@@ -3,7 +3,15 @@ img{
     width: 200px
 }
 
-
+a,p{
+    font-family: 'Acme', sans-serif;
+}
+h1{
+    font-family: 'Acme', sans-serif;
+}
+h5{
+    font-family: 'Acme', sans-serif;
+}
 
 #artInfo{
     font-weight: bolder;

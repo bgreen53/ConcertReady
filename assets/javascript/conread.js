@@ -30,6 +30,7 @@ $(document).ready(function(){
 $(document).on("click", "#search", function(event) {
     event.preventDefault()
     $("#info").empty()
+    $("#artist").empty()
     
     var band = $("#artist").val().trim().split(" ").join("%20")
     
@@ -50,6 +51,9 @@ $(document).on("click", "#search", function(event) {
        console.log(response[0].venue.name)
        //console.log(results)
        console.log(response[0].artist.image_url)
+
+      //  var convertDate=moment(response[i].datetime).formatWithJDF("MM.dd.yyyy hh:mm")
+      //  console.log(convertDate)
       
         for (var i = 0; i < 6; i++) {
           
@@ -78,6 +82,8 @@ $(document).on("click", "#search", function(event) {
           seeShow.text("See This Show")
           seeShow.attr("id", "thisShow")
           seeShow.attr("city", response[i].venue.city)
+          seeShow.attr("lat", response[i].venue.latitude )
+          seeShow.attr("lon", response[i].venue.longitude)
           
             console.log(pic)
 
@@ -87,7 +93,6 @@ $(document).on("click", "#search", function(event) {
             
         $("#pic").html(pic)
         $("#info").append(showInfo)
-        $("#artist").empty()
         $("#artInfo").html(artInfo)
         $("#fbLink").html(link)
         $("#fbLink").append("Like them on Facebook!")
@@ -99,10 +104,12 @@ $(document).on("click", "#search", function(event) {
 
 
       $(document).on("click", "#thisShow", function (event) {
-        
+       $("#eats").empty()
        var loc= $(this).attr("city")
-        
-        var yelpURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location="+ loc +"&term=restaurants&limit=5";
+       var lat= $(this).attr("lat")
+       var lon = $(this).attr("lon")
+       
+        var yelpURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude="+ lat +"&longitude="+lon+ "&term=restaurants&limit=5";
 
         var apiKey = "Yu1G5QxtO5YUFSh4YZMpbCWkVfstUvpnMirspGbNWj88cLXUw3rxgqrk7G9Kpkkxx_qic8LWkb9JeOeRnnpjZkXEo4s0TXtYPCCZj7DNZ3zwn2WNlb7QoXvBHnZ5XnYx"
         console.log(yelpURL)
@@ -124,19 +131,32 @@ $(document).on("click", "#search", function(event) {
             console.log(info[i].name)
             console.log(info)
             console.log(info.length)
+            
     
-            var eats=$("<div>");
-            var resName= info[i].name
-            var resPic= info[i].image_url
-            var resRating= info[i].rating
-            var resType = info[i].category[0]
+            var eatsCard=$("<div class='card horizontal' >");
+            var eatsPic= $("<div class = 'card-image'>")
+            var resInfo=$("<div class='card-stacked'>")
+            
 
+            
+            var resName=$("<h4>").text(info[i].name)
+            resName.addClass("center-align")
+            var resPic= $("<img>")
+            resPic.attr("src", info[i].image_url)
+            var resRating= $("<h5>").text(info[i].rating +" Stars")
+            var resType = $("<h5>").text("Category: " +info[i].categories[0].title)
+
+            
+            eatsCard.append(eatsPic)
+            eatsPic.append(resPic)
+            eatsCard.append(resInfo)
+
+            $("#eats").append(eatsCard)
+            resInfo.append(resName)
+            resInfo.append(resType)
+            resInfo.append(resRating)
             console.log(resName)
-    
-            $("#restaurants").append(resName)
-            $("#restaurants").append(resPic)
-            $("#restaurants").append(resRating)
-            $("#restaurants").append(resType)
+            
     
           }
 
@@ -145,7 +165,6 @@ $(document).on("click", "#search", function(event) {
         });
       
       });
-
      
 
 

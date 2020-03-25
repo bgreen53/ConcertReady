@@ -4,14 +4,14 @@
 <head>
   <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!--Import materialize.css-->
-  <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
   <link rel="icon" type="image/png" href="assets/images/sing.png">
+  <link href="https://fonts.googleapis.com/css?family=Acme&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src=https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js></script>
   <script src="assets/javascript/conread.js"></script>
 
 
@@ -23,9 +23,9 @@
 <body>
 
   <nav>
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo"> ConcertReady</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+    <div class="nav-wrapper black">
+      <a href="#" class="brand-logo black blue-text text-darken-3"> ConcertReady</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down black">
         <li><a href="sass.html">About</a></li>
       </ul>
     </div>
@@ -70,7 +70,7 @@
         
         <!-- Show list section -->
         <div class="section">
-          <h5 class="card-title center-align white-text">List of shows</h5>
+          <h5 class="card-title center-align white-text">Upcoming shows</h5>
           <div class="container">
             <div id="info"></div>
           </div>
@@ -89,8 +89,10 @@
     <div class="col s4">
       <p id="directions">Directions</p>
     </div>
-    <div class="col s4">
-      <p id="restaurants">Restaurants</p>
+    <div class="col s4 card blue-grey darken-1 white-text" >
+      <p >Restaurants</p>
+      <div class= "black-text" id="eats" ></div>
+
     </div>
 
 </body>

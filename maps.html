@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Google Maps</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7fE-2LnNzynFaLbf400kmtJhcftPhqqE"></script>
+<script type="text/javascript" src="assets/javascript/script.js"></script>
+<link href="assets/css/maps.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<table class="tbl-entry">
+	<tr>
+		<td>Starting Point</td>
+		<td><input type="text" id="txtStartingPoint" class="input-entry"/></td>
+	</tr>
+	<tr>
+		<td>Destination Point</td>
+		<td><input type="text" id="txtDestinationPoint" class="input-entry"/></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><input type="button" id="btnQuery" value="Submit" onclick="bytutorialMap.getGeolocationData()"/> <input type="button" id="btnClear" value="Clear" onclick="bytutorialMap.clearEntries()"/> </td>
+	</tr>
+</table>
+
+<table class="tbl-map">
+	<tr>
+		<td><div id="map"></div></td>
+		<td><div id="panel-direction"></div></td>
+	</tr>
+</table>
+
+</body>
+</html>

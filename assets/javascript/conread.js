@@ -1,10 +1,14 @@
 
 //google maps API
 // async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqvGNseOhu5v3Yg0gHMVe4unXgRoLuPQw&callback=initMap"
-  
+//<script async src="https://cse.google.com/cse.js?cx=015633656253291760630:etvibjcc0u7"></script>
 
- //Open weather API
+
+//Open weather API
 //api.openweathermap.org/data/2.5/forecast/daily?q={city name}&cnt={cnt}&appid=b6bcb836bbf008c6cea4df94d9ca492c
+
+//Yelp API TNZPMvhXfv08hIWezsqEy28G9IUoCK13r2UgU4F6uPSuwMr7GoXyAilaB02gqtd-LJTsx3AMMbtwkBhUtIoyItGqyYEpTjhC6ezpEEu7-OeOk03LZyzg37dsdB2XnYx
+
 
 //Spotify API
 //api.spotify.com
@@ -16,7 +20,8 @@
 
 //Bands in Town
 //curl -X GET "https://rest.bandsintown.com/artists/A%20Day%20To%20Remember/events?app_id=642b1873e2de4bb01c82a203278b77e2" -H "accept: application/json"
-var results
+var results = []
+var res=[]
 $(document).ready(function(){
     $('.datepicker').datepicker();
   });
@@ -24,11 +29,14 @@ $(document).ready(function(){
 
 $(document).on("click", "#search", function(event) {
     event.preventDefault()
+    $("#info").empty()
+    $("#artist").empty()
+    
     var band = $("#artist").val().trim().split(" ").join("%20")
     
     console.log(band)
     var queryURL = "https://rest.bandsintown.com/artists/"+ band +"/events?app_id=642b1873e2de4bb01c82a203278b77e2" 
-    //-H "accept: application/json"
+   
 
   console.log(band)
   console.log(queryURL)
@@ -38,75 +46,227 @@ $(document).on("click", "#search", function(event) {
       method: "GET"
     })
       .then(function(response) {
-      results = response;
+       results = response;
        console.log(response)
        console.log(response[0].venue.name)
        //console.log(results)
        console.log(response[0].artist.image_url)
-        
-        for (var i = 0; i < response.length; i++) {
+
+      //  var convertDate=moment(response[i].datetime).formatWithJDF("MM.dd.yyyy hh:mm")
+      //  console.log(convertDate)
+      
+        for (var i = 0; i < 6; i++) {
+          
           var showInfo = $("<div>");
+          showInfo.addClass("card")
+          
           showInfo.append(venues)
           showInfo.append(venueLoc)
           showInfo.append(date)
+          showInfo.append(seeShow)
 
           
 
 
           var pic=$("<img>");
-          pic.attr("src", response[0].artist.thumb_url)
+          pic.attr("src", response[0].artist.image_url)
           var shows = response[i];
-          var venues= $("<p>").html(response[i].venue.name)
-          var venueLoc=$("<p>").html(response[i].venue.city + ", " + response[i].venue.region)
-          var date= $("<p>").html(response[i].datetime)
+          var venues= $("<p>").html("Venue: " + response[i].venue.name)
+          var venueLoc=$("<p>").html("City: " + response[i].venue.city + ", " + response[i].venue.region)
+          var date= $("<p>").html("When: " +response[i].datetime)
+          var artInfo=$("<p>").html(response[0].artist.name)
+          var link=$("<a>").html("<i class='fa fa-facebook-square fa-lg' aria-hidden='true'></i>")
+          link.attr("href", response[0].artist.facebook_page_url)
+          console.log(response[0].artist.facebook_page_url)
+          var seeShow= $("<a class='waves-effect waves-light btn-small'>")
+          seeShow.text("See This Show")
+          seeShow.attr("id", "thisShow")
+          seeShow.attr("city", response[i].venue.city)
+          seeShow.attr("lat", response[i].venue.latitude )
+          seeShow.attr("lon", response[i].venue.longitude)
           
             console.log(pic)
 
             if(response[i].venue.region === ""){
-               venueLoc= $("<p>").html(response[i].venue.city + ", " + response[i].venue.country)
+               venueLoc= $("<p>").html("City: " +response[i].venue.city + ", " + response[i].venue.country)
               }
             
         $("#pic").html(pic)
         $("#info").append(showInfo)
-        logResults()
-        //$("#info").append(venueLoc)
-        //$("#info").append(date)
+        $("#artInfo").html(artInfo)
+        $("#fbLink").html(link)
+        $("#fbLink").append("Like them on Facebook!")
         }
-         // var p = $("<p>").text("Rating: " + rating);
-
-          //var personImage = $("<img>");
-         // personImage.attr("src", results[i].images.fixed_height.url);
-
-         // gifDiv.prepend(p);
-         // gifDiv.prepend(personImage);
-
-         //$("#gifs").prepend(gifDiv);
+        
         });
-
-    
+ 
     });
 
 
-
+      $(document).on("click", "#thisShow", function (event) {
+       $("#eats").empty()
+       var loc= $(this).attr("city")
+       var lat= $(this).attr("lat")
+       var lon = $(this).attr("lon")
        
-        function logResults () {
-          var weatherQ = "https://api.openweathermap.org/data/2.5/weather?lat=" + results[0].venue.latitude + "&lon=" + results[0].venue.longitude + "&appid=b6bcb836bbf008c6cea4df94d9ca492c"
-        console.log(weatherQ) 
-        
+        var yelpURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude="+ lat +"&longitude="+lon+ "&term=restaurants&limit=5";
+
+        var apiKey = "Yu1G5QxtO5YUFSh4YZMpbCWkVfstUvpnMirspGbNWj88cLXUw3rxgqrk7G9Kpkkxx_qic8LWkb9JeOeRnnpjZkXEo4s0TXtYPCCZj7DNZ3zwn2WNlb7QoXvBHnZ5XnYx"
+        console.log(yelpURL)
         $.ajax({
-            url: weatherQ,
-            method: "GET"
-          })
-            .then(function(weather) {
-             console.log(weather.main.temp)
-                    $("#weather").append(weather.main.temp)
-                  })
-          
+          url: yelpURL,
+          method: "GET",
+          dataType: "json",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`
+          }
+        }).then(function (res) {
+          var info =res.businesses
+          console.log(info)
+          console.log(res.businesses[0].name)
+          res=res
+          console.log(info.length)
 
-        }
+          for (var i = 0; i < info.length; i++){
+            console.log(info[i].name)
+            console.log(info)
+            console.log(info.length)
+            
+    
+            var eatsCard=$("<div class='card horizontal' >");
+            var eatsPic= $("<div class = 'card-image'>")
+            var resInfo=$("<div class='card-stacked'>")
+            
+
+            
+            var resName=$("<h4>").text(info[i].name)
+            resName.addClass("center-align")
+            var resPic= $("<img>")
+            resPic.attr("src", info[i].image_url)
+            var resRating= $("<h5>").text(info[i].rating +" Stars")
+            var resType = $("<h5>").text("Category: " +info[i].categories[0].title)
+
+            
+            eatsCard.append(eatsPic)
+            eatsPic.append(resPic)
+            eatsCard.append(resInfo)
+
+            $("#eats").append(eatsCard)
+            resInfo.append(resName)
+            resInfo.append(resType)
+            resInfo.append(resRating)
+            console.log(resName)
+            
+    
+          }
+
+
+
+        });
       
+      });
+     
+      var APIKey = "166a433c57516f51dfab1f7edaed8413";
+      var cityName = "Chicago"
+     
+   
+      var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
+        "q=" + cityName + "&units=imperial&appid=" + APIKey;
+     
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        // We store all of the retrieved data inside of an object called "response"
+        .then(function(response) {
+     
+          // Log the queryURL
+          console.log(queryURL);
+     
+          // Log the resulting object
+          console.log(response);
+     
+          // Transfer content to HTML
+          $(".city").html("<h1>" + response.name + " Weather Details</h1>");
+          $(".wind").text("Wind Speed: " + response.wind.speed);
+          $(".humidity").text("Humidity: " + response.main.humidity);
+          $(".temp").text("Temperature (F) " + response.main.temp);
+     
+          // Log the data in the console as well
+          console.log("Wind Speed: " + response.wind.speed);
+          console.log("Humidity: " + response.main.humidity);
+          console.log("Temperature (F): " + response.main.temp);
+        });
 
+//weather API for finding city and displaying the temperature
+      $(document).on("click", "#thisShow", function (event) {
+        $("#weather").empty()
+        var city = $(this).attr("city")
+        var APIKey = "166a433c57516f51dfab1f7edaed8413";
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +   "q=" + city + "&units=imperial&appid=" + APIKey;
         
+          
+        console.log(queryURL)
+        $.ajax({
+        url: queryURL,
+        method: "GET"
+        })
+        .then(function(response) {
+       console.log(queryURL);
+       console.log(response);
+  
+       var cityWeather = $(".cityWeather").html("<h1>" + response.name + " Weather Details</h1>");
+       var wind = $(".wind").text("Wind Speed: " + response.wind.speed);
+       var humidity = $(".humidity").text("Humidity: " + response.main.humidity);
+       var temp = $(".temp").text("Temperature (F) " + response.main.temp);
+       
+       cityWeather.append("#cityWeather");
+       wind.append("#wind");
+       humidity.append("#humidity");
+       temp.append("#temp");
+  
+       console.log("Wind Speed: " + response.wind.speed);
+       console.log("Humidity: " + response.main.humidity);
+       console.log("Temperature (F): " + response.main.temp);
+     });})
 
 
 
+     $(document).on("click", "#thisShow", function (event) {
+      $("#weather").empty()
+      var city = $(this).attr("city")
+      var APIKey = "166a433c57516f51dfab1f7edaed8413";
+      var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +   "q=" + city + "&units=imperial&appid=" + APIKey;
+      
+        
+      console.log(queryURL)
+      $.ajax({
+      url: queryURL,
+      method: "GET"
+      })
+      .then(function(response) {
+     console.log(queryURL);
+     console.log(response);
+
+     var cityWeather = $(".cityWeather").html("<h1>" + response.sys.name + " Weather Details</h1>");
+     var wind = $(".wind").text("Wind Speed: " + response.wind.speed);
+     var humidity = $(".humidity").text("Humidity: " + response.main.humidity);
+     var temp = $(".temp").text("Temperature (F) " + response.main.temp);
+     
+     cityWeather.append("#cityWeather");
+     wind.append("#wind");
+     humidity.append("#humidity");
+     temp.append("#temp");
+
+     console.log("Wind Speed: " + response.wind.speed);
+     console.log("Humidity: " + response.main.humidity);
+     console.log("Temperature (F): " + response.main.temp);
+   });})
+
+
+
+  
+  
+  
+
+    

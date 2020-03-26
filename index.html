@@ -12,10 +12,11 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src=https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js></script>
-  <script src="assets/javascript/conread.js"></script>
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7fE-2LnNzynFaLbf400kmtJhcftPhqqE"></script>
-<script type="text/javascript" src="assets/javascript/script.js"></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/jQuery-Geolocation/1.0.50/jquery.geolocation.min.js></script>
+<script src="assets/javascript/conread.js"></script>
 <link href="assets/css/maps.css" type="text/css" rel="stylesheet"/>
 
 
@@ -90,23 +91,10 @@
       <p id="weather">Weather</p>
 
     </div>
-    <div class="col s4" >
+    <div class="col s4 card blue-grey darken-1 white-text" >
       <p id="directions">Directions</p>
 
-      <table class="tbl-entry">
-        <tr>
-          <td>Starting Point</td>
-          <td><input type="text" id="txtStartingPoint" class="input-entry"/></td>
-        </tr>
-        <tr>
-          <td>Destination Point</td>
-          <td><input type="text" id="txtDestinationPoint" class="input-entry"/></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td><input type="button" id="btnQuery" value="Submit" onclick="bytutorialMap.getGeolocationData()"/> <input type="button" id="btnClear" value="Clear" onclick="bytutorialMap.clearEntries()"/> </td>
-        </tr>
-      </table>
+     
       
       <table class="tbl-map">
         <tr>

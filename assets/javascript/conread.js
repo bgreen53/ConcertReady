@@ -165,6 +165,72 @@ $(document).on("click", "#search", function(event) {
         });
       
       });
+
+
+//weather API for finding city and displaying the temperature
+      $(document).on("click", "#thisShow", function (event) {
+        $("#weather").empty()
+        var city = $(this).attr("city")
+        var APIKey = "166a433c57516f51dfab1f7edaed8413";
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +   "q=" + city + "&units=imperial&appid=" + APIKey;
+        
+          
+        console.log(queryURL)
+        $.ajax({
+        url: queryURL,
+        method: "GET"
+        })
+        .then(function(response) {
+       console.log(queryURL);
+       console.log(response);
+  
+       var cityWeather = $(".cityWeather").html("<h1>" + response.name + " Weather Details</h1>");
+       var wind = $(".wind").text("Wind Speed: " + response.wind.speed);
+       var humidity = $(".humidity").text("Humidity: " + response.main.humidity);
+       var temp = $(".temp").text("Temperature (F) " + response.main.temp);
+       
+       cityWeather.append("#cityWeather");
+       wind.append("#wind");
+       humidity.append("#humidity");
+       temp.append("#temp");
+  
+       console.log("Wind Speed: " + response.wind.speed);
+       console.log("Humidity: " + response.main.humidity);
+       console.log("Temperature (F): " + response.main.temp);
+     });})
+
+
+
+     $(document).on("click", "#thisShow", function (event) {
+      $("#weather").empty()
+      var city = $(this).attr("city")
+      var APIKey = "166a433c57516f51dfab1f7edaed8413";
+      var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +   "q=" + city + "&units=imperial&appid=" + APIKey;
+      
+        
+      console.log(queryURL)
+      $.ajax({
+      url: queryURL,
+      method: "GET"
+      })
+      .then(function(response) {
+     console.log(queryURL);
+     console.log(response);
+
+     var cityWeather = $(".cityWeather").html("<h1>" + response.sys.name + " Weather Details</h1>");
+     var wind = $(".wind").text("Wind Speed: " + response.wind.speed);
+     var humidity = $(".humidity").text("Humidity: " + response.main.humidity);
+     var temp = $(".temp").text("Temperature (F) " + response.main.temp);
+     
+     cityWeather.append("#cityWeather");
+     wind.append("#wind");
+     humidity.append("#humidity");
+     temp.append("#temp");
+
+     console.log("Wind Speed: " + response.wind.speed);
+     console.log("Humidity: " + response.main.humidity);
+     console.log("Temperature (F): " + response.main.temp);
+   });})
      
 
 

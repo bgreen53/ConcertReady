@@ -98,6 +98,7 @@ $(document).on("click", "#search", function(event) {
        VenLat= $(this).attr("lat")
         Venlng = $(this).attr("lon")
         Weather()
+        
        
         var yelpURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude="+ VenLat +"&longitude="+ Venlng+ "&term=restaurants&limit=5";
 
@@ -117,6 +118,7 @@ $(document).on("click", "#search", function(event) {
           res=res
           console.log(info.length)
           $("#map, #panel-direction").html("");
+          bytutorialMap.getGeolocationData()
 
           for (var i = 0; i < info.length; i++){
             console.log(info[i].name)
@@ -147,7 +149,7 @@ $(document).on("click", "#search", function(event) {
             resInfo.append(resType)
             resInfo.append(resRating)
             console.log(resName)
-            bytutorialMap.getGeolocationData()
+            
             
     
           }

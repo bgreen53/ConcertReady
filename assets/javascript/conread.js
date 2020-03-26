@@ -248,15 +248,15 @@ $(document).on("click", "#search", function(event) {
      console.log(queryURL);
      console.log(response);
 
-     var cityWeather = $(".cityWeather").html("<h1>" + response.sys.name + " Weather Details</h1>");
-     var wind = $(".wind").text("Wind Speed: " + response.wind.speed);
-     var humidity = $(".humidity").text("Humidity: " + response.main.humidity);
-     var temp = $(".temp").text("Temperature (F) " + response.main.temp);
+     var cityWeather = $("<h1>" + response.name + " Weather Details</h1>");
+     var wind = "Wind Speed: " + response.wind.speed;
+     var humidity = "Humidity: " + response.main.humidity;
+     var temp = "Temperature (F) " + response.main.temp;
      
-     cityWeather.append("#cityWeather");
-     wind.append("#wind");
-     humidity.append("#humidity");
-     temp.append("#temp");
+     $("#cityWeather").append(cityWeather);
+     $("#wind").text(wind);
+     $("#humidity").text(humidity);
+     $("#temp").text(temp);
 
      console.log("Wind Speed: " + response.wind.speed);
      console.log("Humidity: " + response.main.humidity);

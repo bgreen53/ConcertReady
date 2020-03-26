@@ -1,30 +1,20 @@
-
-//google maps API
-// async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqvGNseOhu5v3Yg0gHMVe4unXgRoLuPQw&callback=initMap"
-//<script async src="https://cse.google.com/cse.js?cx=015633656253291760630:etvibjcc0u7"></script>
-
-
-//Open weather API
-//api.openweathermap.org/data/2.5/forecast/daily?q={city name}&cnt={cnt}&appid=b6bcb836bbf008c6cea4df94d9ca492c
-
-//Yelp API TNZPMvhXfv08hIWezsqEy28G9IUoCK13r2UgU4F6uPSuwMr7GoXyAilaB02gqtd-LJTsx3AMMbtwkBhUtIoyItGqyYEpTjhC6ezpEEu7-OeOk03LZyzg37dsdB2XnYx
-
-
-//Spotify API
-//api.spotify.com
-
-//Ticketmaster API
-////"https://app.ticketmaster.com/{package}/{version}/{resource}.json?apikey=b7YejLcyutp7MC8dbDuipAPR4yrvDGy7"
-
-//"https://app.ticketmaster.com/discovery/v1/events.json?apikey=b7YejLcyutp7MC8dbDuipAPR4yrvDGy7"
-
-//Bands in Town
-//curl -X GET "https://rest.bandsintown.com/artists/A%20Day%20To%20Remember/events?app_id=642b1873e2de4bb01c82a203278b77e2" -H "accept: application/json"
-var results = []
 var res=[]
 $(document).ready(function(){
     $('.datepicker').datepicker();
   });
+
+  var curLoc= navigator.geolocation.getCurrentPosition(showPosition)
+  console.log(curLoc)
+
+  function showPosition(position) {
+    console.log( "Latitude: " + position.coords.latitude +
+    " Longitude: " + position.coords.longitude)
+    userLat= position.coords.latitude
+    userLng= position.coords.longitude
+
+    console.log(userLat)
+
+  }
 
 
 $(document).on("click", "#search", function(event) {
@@ -52,8 +42,7 @@ $(document).on("click", "#search", function(event) {
        //console.log(results)
        console.log(response[0].artist.image_url)
 
-      //  var convertDate=moment(response[i].datetime).formatWithJDF("MM.dd.yyyy hh:mm")
-      //  console.log(convertDate)
+     
       
         for (var i = 0; i < 6; i++) {
           
@@ -105,11 +94,12 @@ $(document).on("click", "#search", function(event) {
 
       $(document).on("click", "#thisShow", function (event) {
        $("#eats").empty()
-       var loc= $(this).attr("city")
-       var lat= $(this).attr("lat")
-       var lon = $(this).attr("lon")
+       var city = $(this).attr("city")
+       VenLat= $(this).attr("lat")
+        Venlng = $(this).attr("lon")
+        Weather()
        
-        var yelpURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude="+ lat +"&longitude="+lon+ "&term=restaurants&limit=5";
+        var yelpURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude="+ VenLat +"&longitude="+ Venlng+ "&term=restaurants&limit=5";
 
         var apiKey = "Yu1G5QxtO5YUFSh4YZMpbCWkVfstUvpnMirspGbNWj88cLXUw3rxgqrk7G9Kpkkxx_qic8LWkb9JeOeRnnpjZkXEo4s0TXtYPCCZj7DNZ3zwn2WNlb7QoXvBHnZ5XnYx"
         console.log(yelpURL)
@@ -126,6 +116,7 @@ $(document).on("click", "#search", function(event) {
           console.log(res.businesses[0].name)
           res=res
           console.log(info.length)
+          $("#map, #panel-direction").html("");
 
           for (var i = 0; i < info.length; i++){
             console.log(info[i].name)
@@ -156,6 +147,7 @@ $(document).on("click", "#search", function(event) {
             resInfo.append(resType)
             resInfo.append(resRating)
             console.log(resName)
+            bytutorialMap.getGeolocationData()
             
     
           }
@@ -163,110 +155,120 @@ $(document).on("click", "#search", function(event) {
 
 
         });
-      
-      });
-     
-      var APIKey = "166a433c57516f51dfab1f7edaed8413";
-      var cityName = "Chicago"
-     
-   
-      var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
-        "q=" + cityName + "&units=imperial&appid=" + APIKey;
-     
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      })
-        // We store all of the retrieved data inside of an object called "response"
-        .then(function(response) {
-     
-          // Log the queryURL
-          console.log(queryURL);
-     
-          // Log the resulting object
-          console.log(response);
-     
-          // Transfer content to HTML
-          $(".city").html("<h1>" + response.name + " Weather Details</h1>");
-          $(".wind").text("Wind Speed: " + response.wind.speed);
-          $(".humidity").text("Humidity: " + response.main.humidity);
-          $(".temp").text("Temperature (F) " + response.main.temp);
-     
-          // Log the data in the console as well
-          console.log("Wind Speed: " + response.wind.speed);
-          console.log("Humidity: " + response.main.humidity);
-          console.log("Temperature (F): " + response.main.temp);
-        });
 
-//weather API for finding city and displaying the temperature
-      $(document).on("click", "#thisShow", function (event) {
-        $("#weather").empty()
-        var city = $(this).attr("city")
-        var APIKey = "166a433c57516f51dfab1f7edaed8413";
-        var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +   "q=" + city + "&units=imperial&appid=" + APIKey;
-        
-          
-        console.log(queryURL)
-        $.ajax({
-        url: queryURL,
-        method: "GET"
-        })
-        .then(function(response) {
-       console.log(queryURL);
-       console.log(response);
-  
-       var cityWeather = $(".cityWeather").html("<h1>" + response.name + " Weather Details</h1>");
-       var wind = $(".wind").text("Wind Speed: " + response.wind.speed);
-       var humidity = $(".humidity").text("Humidity: " + response.main.humidity);
-       var temp = $(".temp").text("Temperature (F) " + response.main.temp);
+
        
-       cityWeather.append("#cityWeather");
-       wind.append("#wind");
-       humidity.append("#humidity");
-       temp.append("#temp");
-  
-       console.log("Wind Speed: " + response.wind.speed);
-       console.log("Humidity: " + response.main.humidity);
-       console.log("Temperature (F): " + response.main.temp);
-     });})
-
-
-
-     $(document).on("click", "#thisShow", function (event) {
-      $("#weather").empty()
-      var city = $(this).attr("city")
-      var APIKey = "166a433c57516f51dfab1f7edaed8413";
-      var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +   "q=" + city + "&units=imperial&appid=" + APIKey;
       
+var geocoder = new google.maps.Geocoder();
+
+
+
+
+bytutorialMap = {
+	initNavigateMap: function (mapID, panelDirectionID, startLatitude, startLongitude, endLatitude, endLongitude) {
+		var directionsDisplay = new google.maps.DirectionsRenderer;
+		var directionsService = new google.maps.DirectionsService;
+		
+		
+		var map = new google.maps.Map(document.getElementById(mapID), {
+		  zoom: 7,
+		  center: {lat: startLatitude, lng: startLongitude}
+		}); 
+		
+	
+		$("#" + panelDirectionID).html("");
+		directionsDisplay.setMap(map);
+		directionsDisplay.setPanel(document.getElementById(panelDirectionID));
+
+		
+		start = startLatitude + ", " + startLongitude;
+		end = endLatitude + ", " + endLongitude;
+		bytutorialMap.calculateAndDisplayRoute(directionsService, directionsDisplay, start, end);
+	},
+
+	calculateAndDisplayRoute: function (directionsService, directionsDisplay, start, end) {
+		directionsService.route({
+		  origin: start,
+		  destination: end,
+		  travelMode: 'DRIVING'
+		}, function(response, status) {
+		  if (status === 'OK') {
+			directionsDisplay.setDirections(response);
+		  } else {
+			alert('Directions request failed due to ' + status);
+		  }
+		});
+	},
+
+	
+	codeAddress: function (address) {
+		return new Promise(function(resolve, reject){
+			geocoder.geocode({ 'address': address }, function (results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					resolve(results);
+				} else {
+					reject(Error("Geocode for address " + address + " was not successful for the following reason: " + status));
+				}
+			});
+		});
+	},
+	
+	
+	getGeolocationData: function(){
+		
+        bytutorialMap.initNavigateMap("map", "panel-direction", userLat, userLng, VenLat, Venlng);
         
-      console.log(queryURL)
-      $.ajax({
-      url: queryURL,
-      method: "GET"
+			
+	},
+	
+	
+
+	clearEntries: function(){
+		$("#txtStartingPoint, #txtDestinationPoint").val("");
+		$("#map, #panel-direction").html("");
+	}
+}
+
+
+
+
+
+ function Weather(event) {
+$("#weather").empty()
+
+var APIKey = "166a433c57516f51dfab1f7edaed8413";
+var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +   "q=" + city + "&units=imperial&appid=" + APIKey;
+
+  
+console.log(queryURL)
+$.ajax({
+url: queryURL,
+method: "GET"
+})
+.then(function(response) {
+console.log(queryURL);
+console.log(response);
+
+var cityWeather = $("<h5>" + response.name + " Weather Details</h5>");
+cityWeather.addClass("white-text")
+var wind = "Wind Speed: " + response.wind.speed;
+var humidity = "Humidity: " + response.main.humidity;
+var temp = "Temperature (F) " + response.main.temp;
+
+$("#cityWeather").append(cityWeather);
+$("#wind").text(wind);
+$("#humidity").text(humidity);
+$("#temp").text(temp);
+
+console.log("Wind Speed: " + response.wind.speed);
+console.log("Humidity: " + response.main.humidity);
+console.log("Temperature (F): " + response.main.temp);
+})
+  
+}
+
+
       })
-      .then(function(response) {
-     console.log(queryURL);
-     console.log(response);
-
-     var cityWeather = $("<h1>" + response.name + " Weather Details</h1>");
-     var wind = "Wind Speed: " + response.wind.speed;
-     var humidity = "Humidity: " + response.main.humidity;
-     var temp = "Temperature (F) " + response.main.temp;
-     
-     $("#cityWeather").append(cityWeather);
-     $("#wind").text(wind);
-     $("#humidity").text(humidity);
-     $("#temp").text(temp);
-
-     console.log("Wind Speed: " + response.wind.speed);
-     console.log("Humidity: " + response.main.humidity);
-     console.log("Temperature (F): " + response.main.temp);
-   });})
-
-
-
   
-  
-  
+ 
 
-    

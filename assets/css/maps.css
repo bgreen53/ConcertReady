@@ -1,0 +1,33 @@
+body{
+	font-family:Arial;
+	font-size:14px;
+}
+
+table.tbl-entry td{
+	padding:5px 10px;
+}
+
+.input-entry{
+	padding:5px;
+	border-radius:5px;
+	min-width:300px;
+}
+
+table.tbl-map{
+	width:100%;
+}
+
+table.tbl-map td{
+	width:50%;
+	vertical-align:top;
+	padding:10px;
+}
+
+#map{
+	height:500px;
+}
+
+#panel-direction{
+	height:500px;
+    overflow-x:hidden;
+}

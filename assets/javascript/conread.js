@@ -1,7 +1,17 @@
 var res=[]
+
+
 $(document).ready(function(){
     $('.datepicker').datepicker();
   });
+
+  
+  $(function() {
+    $('#dirs').hide();
+    $('#weather').hide();
+    $('#Restaurants').hide();
+    
+});
 
   var curLoc= navigator.geolocation.getCurrentPosition(showPosition)
   console.log(curLoc)
@@ -15,12 +25,14 @@ $(document).ready(function(){
     console.log(userLat)
 
   }
-
+//Bands in Town API
 
 $(document).on("click", "#search", function(event) {
     event.preventDefault()
     $("#info").empty()
-    $("#artist").empty()
+    
+    
+    
     
     var band = $("#artist").val().trim().split(" ").join("%20")
     
@@ -64,7 +76,7 @@ $(document).on("click", "#search", function(event) {
           var venueLoc=$("<p>").html("City: " + response[i].venue.city + ", " + response[i].venue.region)
           var date= $("<p>").html("When: " +response[i].datetime)
           var artInfo=$("<p>").html(response[0].artist.name)
-          var link=$("<a>").html("<i class='fa fa-facebook-square fa-lg' aria-hidden='true'></i>")
+          var link=$("<a>").html("<i class='fab fa-facebook fa-lg #4267b2 blue-text' aria-hidden='true'></i>")
           link.attr("href", response[0].artist.facebook_page_url)
           console.log(response[0].artist.facebook_page_url)
           var seeShow= $("<a class='waves-effect waves-light btn-small'>")
@@ -85,14 +97,21 @@ $(document).on("click", "#search", function(event) {
         $("#artInfo").html(artInfo)
         $("#fbLink").html(link)
         $("#fbLink").append("Like them on Facebook!")
+        $("#artist").val("")
         }
         
         });
  
     });
 
+    // Show Weather, Restaurants, and Directions when show is clicked
 
       $(document).on("click", "#thisShow", function (event) {
+        $('#dirs').show();
+    $('#weather').show();
+    $('#Restaurants').show();
+    $('#shows').removeClass('s12')
+    $('#shows').addClass('s6')
        $("#eats").empty()
        var city = $(this).attr("city")
        VenLat= $(this).attr("lat")
@@ -139,6 +158,34 @@ $(document).on("click", "#search", function(event) {
             var resRating= $("<h5>").text(info[i].rating +" Stars")
             var resType = $("<h5>").text("Category: " +info[i].categories[0].title)
 
+            if(info[i].rating === 3){
+
+              resRating=$("<h5>").html("Rating:<i class='fas fa-star'></i><i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i>")
+
+            }
+            if(info[i].rating === 3.5){
+
+              resRating=$("<h5>").html("Rating:<i class='fas fa-star'></i><i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i><<i class='fas fa-star-half' aria-hidden='true'></i>")
+
+            }
+
+            if(info[i].rating === 4){
+
+              resRating=$("<h5>").html("Rating:<i class='fas fa-star'></i><i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i>")
+
+            }
+            if(info[i].rating === 4.5){
+
+              resRating=$("<h5>").html("Rating:<i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star-half' aria-hidden='true'></i>")
+
+            }
+            if(info[i].rating === 5){
+
+              resRating=$("<h5>").html("Rating:<i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i><i class='fas fa-star' aria-hidden='true'></i>")
+
+            }
+            
+
             
             eatsCard.append(eatsPic)
             eatsPic.append(resPic)
@@ -149,7 +196,7 @@ $(document).on("click", "#search", function(event) {
             resInfo.append(resType)
             resInfo.append(resRating)
             console.log(resName)
-            
+           
             
     
           }
@@ -159,7 +206,7 @@ $(document).on("click", "#search", function(event) {
         });
 
 
-       
+//Maps API     
       
 var geocoder = new google.maps.Geocoder();
 
@@ -232,11 +279,11 @@ bytutorialMap = {
 }
 
 
-
+// Open Weather API
 
 
  function Weather(event) {
-$("#weather").empty()
+  $("#weatherData").empty()
 
 var APIKey = "166a433c57516f51dfab1f7edaed8413";
 var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +   "q=" + city + "&units=imperial&appid=" + APIKey;
@@ -251,16 +298,17 @@ method: "GET"
 console.log(queryURL);
 console.log(response);
 
-var cityWeather = $("<h5>" + response.name + " Weather Details</h5>");
-cityWeather.addClass("white-text")
-var wind = "Wind Speed: " + response.wind.speed;
-var humidity = "Humidity: " + response.main.humidity;
-var temp = "Temperature (F) " + response.main.temp;
+var cityWeather = $("<h3>" + response.name + " Weather Details</h3>");
+cityWeather.addClass('center-align')
+var wind = $("<h6><i class='fas fa-wind fa-lg'></i>  " + response.wind.speed +" mph</h6>");
+var humidity = $("<h6><i class='fas fa-humidity fa-lg'></i>: " + response.main.humidity+"</h6>");
+var temp = $("<h6><i class='fas fa-temperature-high'></i> (F): " + response.main.temp+"</h6>");
 
-$("#cityWeather").append(cityWeather);
-$("#wind").text(wind);
-$("#humidity").text(humidity);
-$("#temp").text(temp);
+$('#weatherData').append(cityWeather)
+$('#weatherData').append(temp);
+$('#weatherData').append(wind);
+$('#weatherData').append(humidity);
+
 
 console.log("Wind Speed: " + response.wind.speed);
 console.log("Humidity: " + response.main.humidity);

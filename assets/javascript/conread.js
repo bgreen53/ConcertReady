@@ -301,7 +301,7 @@ console.log(response);
 var cityWeather = $("<h3>" + response.name + " Weather Details</h3>");
 cityWeather.addClass('center-align')
 var wind = $("<h6><i class='fas fa-wind fa-lg'></i>  " + response.wind.speed +" mph</h6>");
-var humidity = $("<h6><i class='fas fa-humidity fa-lg'></i>: " + response.main.humidity+"</h6>");
+var humidity = $("<h6>Humidity: " + response.main.humidity+"</h6>");
 var temp = $("<h6><i class='fas fa-temperature-high'></i> (F): " + response.main.temp+"</h6>");
 
 $('#weatherData').append(cityWeather)
